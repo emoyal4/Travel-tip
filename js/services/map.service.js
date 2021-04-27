@@ -12,7 +12,7 @@ var gMap;
 const API_KEY = 'AIzaSyBE1CXSNnqtB9JqsicFV1CtmqEhb592YPY';
 var gLocationUrl
 
-function initMap(lat, lng) {
+function initMap(lat,lng) {
     console.log('InitMap');
     if (lat === null || lng === null) {
         lat = 32.0749831

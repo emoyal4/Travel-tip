@@ -6,7 +6,7 @@ window.onload = onInit;
 function onInit() {
     addEventListenrs();
     var location = getLocationFromUrl()
-    mapService.initMap(location.lat,location.lng)
+    mapService.initMap(+location.lat, +location.lng)
         .then(() => {
             console.log('Map is ready');
         })
@@ -80,6 +80,6 @@ function getLocationFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     const lat = urlParams.get('lat');
     const lng = urlParams.get('lng');
-    return {lat , lng}
+    return { lat, lng }
 }
 
