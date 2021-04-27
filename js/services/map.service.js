@@ -4,14 +4,20 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
-    getCoorde
+    getCoorde,
+    getUpdateUrl
 }
 
 var gMap;
 const API_KEY = 'AIzaSyBE1CXSNnqtB9JqsicFV1CtmqEhb592YPY';
+var gLocationUrl
 
-function initMap(lat = 32.0749831, lng = 34.9120554) {
+function initMap(lat, lng) {
     console.log('InitMap');
+    if (lat === null || lng === null) {
+        lat = 32.0749831
+        lng = 34.9120554 
+    }
     return _connectGoogleApi()
         .then(() => {
             console.log('google available');
@@ -56,6 +62,18 @@ function _connectGoogleApi() {
 
 function getCoorde(location) {
     const prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=1600+${location}&key=${API_KEY}`)
-        .then(res => res.data);
+    .then(res => {
+        _updateLocationUrl(res.data)
+        return res.data
+        });
     return prm;
+}
+
+function _updateLocationUrl(data){
+    var location = data.results[0].geometry.location
+    gLocationUrl = `https://emoyal4.github.io/Travel-tip/index.html?lat=${location.lat}&lng=${location.lng}`
+}
+
+function getUpdateUrl(){
+    return gLocationUrl
 }

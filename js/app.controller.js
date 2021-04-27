@@ -4,9 +4,9 @@ import { mapService } from './services/map.service.js'
 window.onload = onInit;
 
 function onInit() {
-    console.log('hi');
     addEventListenrs();
-    mapService.initMap()
+    var location = getLocationFromUrl()
+    mapService.initMap(location.lat,location.lng)
         .then(() => {
             console.log('Map is ready');
         })
@@ -15,16 +15,24 @@ function onInit() {
 
 function addEventListenrs() {
     document.querySelector('.btn-pan').addEventListener('click', (ev) => {
-        console.log('Panning the Map');
         mapService.panTo(35.6895, 139.6917);
+    })
+    document.querySelector('.copy-location-btn').addEventListener('click', (ev) => {
+        var url = mapService.getUpdateUrl();
+        navigator.clipboard.writeText(url)
+        Swal.fire(
+            'copy!',
+            `use Ctrl+V to paste`,
+            'success'
+        )
+
     })
     document.querySelector('.search-btn').addEventListener('click', (ev) => {
         var locationTxt = document.querySelector('.location-search').value;
-        console.log('locationTxt', locationTxt);
         mapService.getCoorde(locationTxt)
             .then(location => {
                 console.log(location);
-                var locationCoordes= location.results[0].geometry.location;
+                var locationCoordes = location.results[0].geometry.location;
                 mapService.panTo(locationCoordes.lat, locationCoordes.lng);
                 locService.addLoc(locationTxt, locationCoordes);
                 renderLocationTitle(location.results[0].formatted_address);
@@ -64,7 +72,14 @@ function getPosition() {
     })
 }
 
-function renderLocationTitle(locationName){
-    document.querySelector('.location-title').innerText=locationName;
+function renderLocationTitle(locationName) {
+    document.querySelector('.location-title').innerText = locationName;
+}
+
+function getLocationFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const lat = urlParams.get('lat');
+    const lng = urlParams.get('lng');
+    return {lat , lng}
 }
 
