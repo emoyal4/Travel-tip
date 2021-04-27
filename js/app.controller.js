@@ -1,16 +1,29 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 
+
+
+
 window.onload = onInit;
 
 function onInit() {
-    addEventListenrs();
     var location = getLocationFromUrl()
     mapService.initMap(+location.lat, +location.lng)
         .then(() => {
-            console.log('Map is ready');
+            mapService.getMap().addListener("click", (mapsMouseEvent) => {
+                var pos = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2);
+                pos = JSON.parse(pos);
+                mapService.getLocationFromCoorde(pos.lat, pos.lng)
+                    .then(location => {
+                        renderLocationTitle(location);
+                        locService.addLoc(location, pos)
+                        renderLocationTable();
+                    })
+            });
         })
         .catch(() => console.log('Error: cannot init map'));
+    renderLocationTable();
+    addEventListenrs();
 }
 
 function addEventListenrs() {
@@ -31,29 +44,27 @@ function addEventListenrs() {
         var locationTxt = document.querySelector('.location-search').value;
         mapService.getCoorde(locationTxt)
             .then(location => {
-                console.log(location);
                 var locationCoordes = location.results[0].geometry.location;
                 mapService.panTo(locationCoordes.lat, locationCoordes.lng);
                 locService.addLoc(locationTxt, locationCoordes);
                 renderLocationTitle(location.results[0].formatted_address);
+                renderLocationTable();
             });
     })
     document.querySelector('.btn-add-marker').addEventListener('click', (ev) => {
-        console.log('Adding a marker');
         mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
     })
-    document.querySelector('.btn-get-locs').addEventListener('click', (ev) => {
-        locService.getLocs()
-            .then(locs => {
-                console.log('Locations:', locs)
-                document.querySelector('.locs').innerText = JSON.stringify(locs)
-            })
+    // document.querySelector('.btn-get-locs').addEventListener('click', (ev) => {
+    //     locService.getLocs()
+    //         .then(locs => {
+    //             document.querySelector('.locs').innerText = JSON.stringify(locs)
+    //         })
 
-    })
+    // })
     document.querySelector('.btn-user-pos').addEventListener('click', (ev) => {
         getPosition()
             .then(pos => {
-                console.log('User position is:', pos.coords);
+
                 document.querySelector('.user-pos').innerText =
                     `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
             })
@@ -61,12 +72,25 @@ function addEventListenrs() {
                 console.log('err!!!', err);
             })
     })
+    var elGoBtns = document.querySelectorAll('.to-address-btn');
+    elGoBtns.forEach(function (btn) {
+        btn.addEventListener('click', (ev) => {
+            mapService.panTo(ev.target.dataset.lat, ev.target.dataset.lng)
+        })
+    })
+    var elRemoveBtns = document.querySelectorAll('.remove-address-btn');
+    elRemoveBtns.forEach(function (btn) {
+        btn.addEventListener('click', (ev) => {
+            locService.removeLoc(ev.target.dataset.idx)
+        })
+        
+    })
+
 }
 
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {
-    console.log('Getting Pos');
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
@@ -83,3 +107,25 @@ function getLocationFromUrl() {
     return { lat, lng }
 }
 
+function renderLocationTable() {
+    var locations = locService.getLocs()
+    if (!locations) return;
+    var strHtml = locations.map(function (location, idx) {
+        return `<tr>
+        <td>${location.name}</td>
+        <td>lat: ${location.lat.toFixed(3)} lng: ${location.lng.toFixed(3)} </td>
+        <td>${location.searchAt}</td>
+        <td>
+            <button class="to-address-btn" data-lat="${location.lat}" data-lng="${location.lng}">Go</button>
+            <button class="remove-address-btn" data-idx="${idx}">Remove</button>
+        </td>
+    </tr>`;
+    });
+
+    document.querySelector('.table').innerHTML = strHtml.join('');
+
+
+}
+
+// var num = (15.46974).toFixed(2)
+// console.log(num) // 15.47
