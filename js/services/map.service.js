@@ -3,10 +3,12 @@
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    getCoorde
 }
 
 var gMap;
+const API_KEY = 'AIzaSyBE1CXSNnqtB9JqsicFV1CtmqEhb592YPY';
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
@@ -40,7 +42,7 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyCUEnEL-D59JCymx_6jmOZ6FkBaCKTYTTI';
+
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -50,4 +52,10 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
+}
+
+function getCoorde(location) {
+    const prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=1600+${location}&key=${API_KEY}`)
+        .then(res => res.data);
+    return prm;
 }

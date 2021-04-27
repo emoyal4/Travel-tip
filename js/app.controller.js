@@ -17,6 +17,18 @@ function addEventListenrs() {
         console.log('Panning the Map');
         mapService.panTo(35.6895, 139.6917);
     })
+    document.querySelector('.search-btn').addEventListener('click', (ev) => {
+        var locationTxt = document.querySelector('.location-search').value;
+        console.log('locationTxt', locationTxt);
+        mapService.getCoorde(locationTxt)
+            .then(location => {
+                console.log(location);
+                var locationCoordes= location.results[0].geometry.location;
+                mapService.panTo(locationCoordes.lat, locationCoordes.lng);
+                locService.addLoc(locationTxt, locationCoordes);
+                renderLocationTitle(location.results[0].formatted_address);
+            });
+    })
     document.querySelector('.btn-add-marker').addEventListener('click', (ev) => {
         console.log('Adding a marker');
         mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
@@ -49,5 +61,9 @@ function getPosition() {
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
+}
+
+function renderLocationTitle(locationName){
+    document.querySelector('.location-title').innerText=locationName;
 }
 
