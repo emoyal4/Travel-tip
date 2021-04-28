@@ -9,5 +9,5 @@ function getWeather(location){
         location.lat = 32.0749831
         location.lng = 34.9120554
     }
-   return axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lng}&APPID=${WEATHER_API_KEY}`)
+   return axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lng}&APPID=${WEATHER_API_KEY}`)
 }

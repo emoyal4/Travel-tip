@@ -65,12 +65,19 @@ input{
     padding: 3px;
     border: none;
     border-radius: 3px;
+    background-color:  rgb(228, 228, 228);
 }
 
 .search-btn{
     padding: 4px 7px;
     border-radius: 3px;
+    background-color:  rgb(228, 228, 228);
     border: none;
+    cursor: pointer;
+}
+
+.search-btn:hover{
+    color: rgb(6, 175, 0);
 }
 
 .main-container {
@@ -97,14 +104,17 @@ input{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    border-radius: 5px;
     gap: 0.5vh;
 }
 
 .weather-container {
     display: flex;
     flex-direction: column;
+    background-color: rgba(0, 132, 255, 0.322);
     justify-content: space-between;
     align-items: flex-start;
+    border-radius: 5px;
     gap: 0.5vh;
 }
 
