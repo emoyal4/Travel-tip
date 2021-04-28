@@ -10,7 +10,7 @@ function onInit() {
     var location = getLocationFromUrl()
     mapService.getLocationFromCoorde(location)
         .then(name => renderLocationTitle(name))
-   
+
     weatherService.getWeather(location)
         .then(weather => {
             renderWeather(weather.data)
@@ -128,7 +128,7 @@ function renderWeather(data) {
         <img class="weather-icon" src="http://openweathermap.org/img/wn/${dataWeather.icon}@2x.png"/>
     </div>       
     <p class="location-info">${dataWeather.description}</p>
-    <p class="weather-info">Temperrature: min: ${(dataTemp.temp_min - 32) * (5 / 9).toFixed(0)} max: ${(dataTemp.temp_max - 32) * (5 / 9).toFixed(0)}</p>`
+    <p class="weather-info">Temperrature: min: ${(dataTemp.temp_min - 273.15).toFixed(0)} C , max: ${(dataTemp.temp_max - 273.15).toFixed(0)} C</p>`
     document.querySelector('.weather-container').innerHTML = strHTML
 }
 
