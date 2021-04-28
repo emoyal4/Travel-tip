@@ -1,46 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/76a6694072.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/main.css">
     <title>TravelTip</title>
 </head>
+
 <body>
-    <h1>TravelTip</h1>
-    <div id="map" style="width: 350px; height: 350px;"></div>
-    <input type="search" class="location-search">
-    <h3 >Location: <h4 class="location-title"></h4></h3>
-    <button class="search-btn">GO</button>
-    <button class="copy-location-btn">Copy Location</button>
-    <button class="btn-add-marker">Add Marker Speific Location</button>
-    <button class="btn-user-pos">Get User Position</button>
-    <!-- <button class="btn-get-locs">Get Locations</button> -->
-    <button class="btn-pan">Pan Map to Tokyo</button>
+    <header>
+        <h1>TravelTip</h1>
+        <div class="search-container">
+            <input type="search" class="location-search">
+            <button class="search-btn"><i class="fas fa-location-arrow"></i></button>
+        </div>
+    </header>
 
-    <table>
+    <main class="main-container">
+
+        <div class="map-container">
+            <div class="location-container">
+                <h3>Location:
+                    <span class="location-title"></span>
+                </h3>
+                <div class="weather-container"></div>
+            </div>
+            <div class="map" id="map"></div>
+        </div>
         
-    </table>
+        <div class="button-container">
+            <button class="copy-location-btn">Copy Location<i class="far fa-copy fa-2x"></i>
+            </button>
+        </div>
 
-    <table>
-        <thead>
-            <th>Address</th>
-            <th>Coordes</th>
-            <th>Search Time</th>
-            <th>Action</th>
-        </thead>
-        <tbody class="table">
-          
+        <div class="table-container">
+            <table>
+                <thead>
+                    <th>Address</th>
+                    <th>Coordes</th>
+                    <th>Search Time</th>
+                    <th>Action</th>
+                </thead>
+                <tbody class="table"></tbody>
+            </table>
+        </div>
 
-        </tbody>
-    </table>
+    </main>
 
-    <p>You are at: <span class="user-pos"></span></p>
-    <p>Locations: <span class="locs"></span></p>
-    
     <script src="lib/swal.js"></script>
     <script src="lib/axios.js"></script>
     <script type="module" src="js/app.controller.js"></script>
 </body>
+
 </html>
-
-

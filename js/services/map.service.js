@@ -18,11 +18,9 @@ function initMap(lat, lng) {
     if (!lat || !lng) {
         lat = 32.0749831
         lng = 34.9120554
-        console.log(lat, lng);
     }
     return _connectGoogleApi()
         .then(() => {
-            console.log('google available');
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
                 center: { lat, lng },
@@ -73,6 +71,10 @@ function getLocationFromAddress(location) {
 }
 
 function getLocationFromCoorde(lat, lng) {
+    if (!lat || !lng) {
+        lat = 32.0749831
+        lng = 34.9120554
+    }
     const prm = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`)
         .then(res => {
             _updateLocationUrl(res.data)

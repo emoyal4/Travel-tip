@@ -33,17 +33,3 @@ function removeLoc(idx){
     storageService.saveToStorage(MY_LOCATION_LIST_KEY, gLocs)
 }
 
-
-
-
-
-
-// function getLocs() {
-//     return new Promise((resolve, reject) => {
-//         setTimeout(() => {
-//             locs = storageService.loadFromStorage(MY_LOCATION_LIST_KEY)
-//             if (!locs) locs = [];
-//             resolve(locs);
-//         }, 2000)
-//     });
-// }
